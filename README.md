@@ -38,28 +38,36 @@ Ensure you have **Python 3.11+** installed. We recommend using **uv** for lightn
 Choose the command for your operating system:
 
 **Windows (PowerShell):**
+powershell
 
-```powershell
+```
 powershell -c "ir | iex" (irm [https://astral.sh/uv/install.ps1](https://astral.sh/uv/install.ps1))
+```
 
 Linux & macOS (Terminal):
 Bash
 
+```
 curl -LsSf [https://astral.sh/uv/install.sh](https://astral.sh/uv/install.sh) | sh
+```
 
 Using pip (Cross-platform):
 Bash
 
+```
 pip install uv
+```
 
 3. Configuration
 
 Clone the repository and create a .env file in the root directory:
 Фрагмент кода
 
+```
 TG_TOKEN=your_bot_token_here
 USE_PROXY=False
 PROXY_URL=socks5://user:pass@host:port
+```
 
 4. Install Dependencies
 
@@ -67,17 +75,28 @@ Use uv to install all required packages (including aiogram, aiosqlite, and reque
 Bash
 
 # Syncing dependencies from requirements.txt
+
+```
 uv pip install -r requirements.txt
+```
 
 # Or manual installation of core requirements
+
+```
 uv pip install aiogram aiosqlite python-dotenv requests
+```
 
 5. Launch the Bot
-Bash
+   Bash
 
 # Recommended way using uv
+
+```
 uv run run.py
+```
 
 # Or using standard python
+
+```
 python run.py
 ```

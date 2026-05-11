@@ -38,65 +38,62 @@ Ensure you have **Python 3.11+** installed. We recommend using **uv** for lightn
 Choose the command for your operating system:
 
 **Windows (PowerShell):**
-powershell
+
+```powershell
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 
 ```
-powershell -c "ir | iex" (irm [https://astral.sh/uv/install.ps1](https://astral.sh/uv/install.ps1))
-```
 
-Linux & macOS (Terminal):
-Bash
+**Linux & macOS:**
 
-```
-curl -LsSf [https://astral.sh/uv/install.sh](https://astral.sh/uv/install.sh) | sh
-```
-
-Using pip (Cross-platform):
-Bash
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
 ```
+
+**Using pip (Cross-platform):**
+
+```bash
 pip install uv
-```
-
-3. Configuration
-
-Clone the repository and create a .env file in the root directory:
-Фрагмент кода
 
 ```
+
+### 3. Configuration
+
+Clone the repository and create a `.env` file in the root directory:
+
+```.env
 TG_TOKEN=your_bot_token_here
 USE_PROXY=False
 PROXY_URL=socks5://user:pass@host:port
+
 ```
 
-4. Install Dependencies
+### 4. Install Dependencies
 
-Use uv to install all required packages (including aiogram, aiosqlite, and requests for external API calls):
-Bash
+Use `uv` to install all required packages (including `aiogram`, `aiosqlite`, and `python-dotenv`):
 
+```bash
 # Syncing dependencies from requirements.txt
-
-```
 uv pip install -r requirements.txt
-```
 
 # Or manual installation of core requirements
-
-```
 uv pip install aiogram aiosqlite python-dotenv requests
-```
-
-5. Launch the Bot
-   Bash
-
-# Recommended way using uv
 
 ```
+
+### 5. Launch the Bot
+
+**Recommended way using `uv`:**
+
+```bash
 uv run run.py
-```
-
-# Or using standard python
 
 ```
+
+**Standard Python:**
+
+```bash
 python run.py
+
 ```

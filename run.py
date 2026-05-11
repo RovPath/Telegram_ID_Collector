@@ -1,34 +1,38 @@
-import os
 import asyncio
 import logging
 from aiogram import Bot, Dispatcher
+from aiogram.client.session.aiohttp import AiohttpSession
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
 
-from dotenv import load_dotenv
-
-from handlers.commands import router as router_commands
-from handlers.idcollector import router as router_idcollector
+from config import BOT_TOKEN, USE_PROXY, PROXY_URL
+from handlers import commands, idcollector
+from database.manager import DBManager
+from middlewares.i18n import L10nMiddleware
 
 
 async def main():
-    load_dotenv()
-    bot = Bot(os.getenv("TG_TOKEN"))
+    logging.basicConfig(level=logging.INFO)
+
+    session = AiohttpSession(proxy=PROXY_URL) if USE_PROXY and PROXY_URL else None
+    bot = Bot(token=BOT_TOKEN, session=session, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+
     dp = Dispatcher()
-    dp.startup.register(startup)
-    dp.shutdown.register(shutdown)
-    dp.include_routers(router_commands, router_idcollector)
-    await dp.start_polling(bot)
+    db = DBManager()
 
+    await db.connect()
 
-async def startup(dispatcher: Dispatcher):
-    print("Starting up...")
+    dp.update.outer_middleware(L10nMiddleware(db))
+    dp.include_routers(commands.router, idcollector.router)
 
-
-async def shutdown(dispatcher: Dispatcher):
-    print("Shutting down...")
+    try:
+        await dp.start_polling(bot)
+    finally:
+        await db.close()
+        await bot.session.close()
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
